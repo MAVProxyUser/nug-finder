@@ -24,30 +24,56 @@ numpages.times { |digit|
 	parsed = JSON.load(finalpage)
 	parsed['props']['pageProps']['strains'].each do | strain |
 		x =strain['description'].split(/\s+/).find_all { |u| u =~ /^href?/ }
+
 		if x.size == 0
 		#	puts "not proper number of elements: " + x.size.to_s	
     
 		elsif x.size == 2
+
+			puts("curl -X PUT 'http://localhost:9200/plants/phenotype/_bulk' -H 'content-type: application/json' -d '")
+
 		#	puts strain['category']
 		#	puts strain['chemotype']
 		#	puts strain['description']
 			
-			output = []
-			output << "-> https://www.leafly.com/strains/" + strain['slug']
+			#output = []
+			#output << "-> https://www.leafly.com/strains/" + strain['slug']
 
+			# { "index": { "_id": "deathstar", "parent": "indica" }}
+			# { "strain": "DeathStar", "mateA": "sensistar", "mateB": "sourdiesel" }
+
+			# { "index": { "_id": "sensistar", "parent": "indica" }}
+			# { "strain": "SensiStar", "mateA": "unknown", "mateB": "unknown" }
+
+			# { "index": { "_id": "sourdiesel", "parent": "sativa" }}
+			# { "strain": "SourDiesel", "mateA": "unknown", "mateB": "unknown" }
+
+			puts('{ "index": { "_id": "' + strain['slug'] + '", "parent": "' + strain['category']  + '" }}')
+
+			parents = []
 	 		x.each do | parent |
 				if parent.include? "/strains/"
 					if parent.include? "/strains/lists"
 					else 
-						output << "`---> https://www.leafly.com/strains" + parent.split('"')[1]
+						parents << parent.split('"')[1].split('/')[2]
+						# output << "`---> https://www.leafly.com/strains" + parent.split('"')[1]
 					end
 				end
 			end
 			
-			if output.size == 3
-				puts output
-				puts "--------------------------------------------------------------"
+			if parents.size == 2
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "' + parents[1] + '" }' + "'")
+			elsif parents.size == 1
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "unknown" }' + "'")
+			else
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "unknown", "mateB": "unknown" }' + "'")
 			end
+
+			#if output.size == 3
+			#	puts output
+			#	puts "--------------------------------------------------------------"
+			#end
+
 		else
 		#	puts "not proper number of elements: " + x.size.to_s	
 
