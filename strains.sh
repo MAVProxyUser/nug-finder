@@ -11,5 +11,7 @@ curl -X PUT 'http://localhost:9200/plants/phenotype/_bulk' \
 { "strain": "SensiStar", "mateA": "unknown", "mateB": "unknown" }
 { "index": { "_id": "sourdiesel", "parent": "sativa" }}
 { "strain": "SourDiesel", "mateA": "unknown", "mateB": "unknown" }
+{ "index": { "_id": "afgoo", "parent": "indica" }}
+{ "strain": "afgoo", "mateA": "afgooey", "mateB": "afghani" }
 '
 

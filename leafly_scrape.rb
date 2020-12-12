@@ -30,7 +30,9 @@ numpages.times { |digit|
     
 		elsif x.size == 2
 
-			puts("curl -X PUT 'http://localhost:9200/plants/phenotype/_bulk' -H 'content-type: application/json' -d '")
+			puts("curl -X PUT 'http://localhost:9200/plants/phenotype/_bulk' \\") 
+			puts("-H 'content-type: application/json' \\")
+			puts("-d '")
 
 		#	puts strain['category']
 		#	puts strain['chemotype']
@@ -38,15 +40,6 @@ numpages.times { |digit|
 			
 			#output = []
 			#output << "-> https://www.leafly.com/strains/" + strain['slug']
-
-			# { "index": { "_id": "deathstar", "parent": "indica" }}
-			# { "strain": "DeathStar", "mateA": "sensistar", "mateB": "sourdiesel" }
-
-			# { "index": { "_id": "sensistar", "parent": "indica" }}
-			# { "strain": "SensiStar", "mateA": "unknown", "mateB": "unknown" }
-
-			# { "index": { "_id": "sourdiesel", "parent": "sativa" }}
-			# { "strain": "SourDiesel", "mateA": "unknown", "mateB": "unknown" }
 
 			puts('{ "index": { "_id": "' + strain['slug'] + '", "parent": "' + strain['category']  + '" }}')
 
@@ -62,11 +55,11 @@ numpages.times { |digit|
 			end
 			
 			if parents.size == 2
-				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "' + parents[1] + '" }' + "'")
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "' + parents[1] + '" }' + "\n'")
 			elsif parents.size == 1
-				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "unknown" }' + "'")
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "' + parents[0]  + '", "mateB": "unknown" }' + "\n'")
 			else
-				puts('{ "strain": "' + strain['slug'] + '", "mateA": "unknown", "mateB": "unknown" }' + "'")
+				puts('{ "strain": "' + strain['slug'] + '", "mateA": "unknown", "mateB": "unknown" }' + "\n'")
 			end
 
 			#if output.size == 3
